@@ -1,0 +1,168 @@
+/* Основные стили */
+body {
+  margin: 0;
+  background: #121212;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: white;
+  font-weight: bold;
+}
+
+.App {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: white;
+  font-weight: normal;
+  font-family: 'Krona One', sans-serif;
+  font-size: 35px;
+}
+
+.main-title {
+  font-family: 'Krona One', sans-serif;
+}
+
+/* Стили для таблицы достижений */
+.achievements-table {
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: 20px;
+  padding: 0;
+  width: 100%;
+}
+
+.achievements-header {
+  display: grid;
+  grid-template-columns: 80px 250px 1fr;
+  grid-gap: 30px;
+  padding: 15px;
+  color: #888;
+  margin-bottom: 15px;
+  font-weight: 500;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 20px;
+}
+
+.achievement-row {
+  display: grid;
+  grid-template-columns: 80px 250px 1fr;
+  grid-gap: 30px;
+  padding: 15px;
+  margin-bottom: 15px;
+  background: #1e1e1e;
+  border-radius: 16px;
+  align-items: center;
+  min-height: 52px;
+}
+
+.achievement-number, .achievement-title, .achievement-description {
+  color: #FFFFFF;
+  font-size: 20px;
+  font-family: 'Comfortaa', cursive;
+  font-weight: normal;
+}
+
+.achievement-number {
+  text-align: center;
+}
+
+.achievement-title {
+  padding-left: -10px;
+  margin-left: -10px;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.achievement-description {
+  padding-left: 0;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+/* Стили для логотипа */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 35px;
+  margin-bottom: 35px;
+}
+
+.logo {
+  width: 230px;
+  height: 45px;
+}
+
+/* Стили для кнопки скриншота */
+.screenshot-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: -30px;
+  padding: 20px;
+}
+
+.screenshot-button-container button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.screenshot-button-container button:hover {
+  background: #444;
+}
+
+/* Общие стили для кнопок */
+button {
+  padding: 5px 10px;
+  background: #333;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #444;
+}
+
+/* Стили для формы добавления */
+.add-form {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+input, textarea {
+  padding: 8px;
+  background: #333;
+  border: 1px solid #444;
+  color: white;
+  border-radius: 4px;
+  font-weight: bold;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+
+.bulk-add {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.bulk-add textarea {
+  flex: 1;
+  min-height: 100px;
+}
+
+.bulk-add-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+} 

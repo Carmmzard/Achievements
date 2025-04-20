@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WEEKLY ACHIEVEMENTS</title>
+    <link rel="stylesheet" href="src/weekly-achievements.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Krona+One&family=Readex+Pro:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Allerta&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div id="root"></div>
+    
+    <!-- Загружаем скрипты в правильном порядке -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/17.0.2/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <script type="text/babel">
+        function App() {
+            const [achievements, setAchievements] = React.useState([]);
+            const [showBulkAdd, setShowBulkAdd] = React.useState(false);
+            const [newAchievement, setNewAchievement] = React.useState({
+                title: '',
+                description: ''
+            });
+            const [bulkTitles, setBulkTitles] = React.useState('');
+            const [bulkDescriptions, setBulkDescriptions] = React.useState('');
+
+            const addAchievement = (e) => {
+                e.preventDefault();
+                if (newAchievement.title && newAchievement.description) {
+                    setAchievements([...achievements, {
+                        ...newAchievement,
+                        id: achievements.length + 1
+                    }]);
+                    setNewAchievement({
+                        title: '',
+                        description: ''
+                    });
+                }
+            };
+
+            const handleBulkAdd = () => {
+                const titles = bulkTitles.split('\n').filter(t => t.trim());
+                const descriptions = bulkDescriptions.split('\n').filter(d => d.trim());
+
+                const newAchievements = titles.map((title, index) => ({
+                    id: achievements.length + index + 1,
+                    title: title.trim(),
+                    description: descriptions[index] ? descriptions[index].trim() : ''
+                }));
+
+                setAchievements([...achievements, ...newAchievements]);
+                setBulkTitles('');
+                setBulkDescriptions('');
+                setShowBulkAdd(false);
+            };
+
+            const clearAllAchievements = () => {
+                setAchievements([]);
+            };
+
+            const takeScreenshot = async () => {
+                const element = document.querySelector('.App');
+                try {
+                    // Ждем загрузки изображения
+                    await new Promise((resolve) => {
+                        const img = element.querySelector('.logo');
+                        if (img.complete) {
+                            resolve();
+                        } else {
+                            img.onload = resolve;
+                        }
+                    });
+
+                    const canvas = await html2canvas(element, {
+                        backgroundColor: '#121212',
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        ignoreElements: (element) => {
+                            return element.className === 'add-form' ||
+                                  element.className === 'bulk-add' ||
+                                  element.className === 'screenshot-button-container' ||
+                                  element.className === 'screenshot-exclude';
+                        }
+                    });
+
+                    canvas.toBlob(async (blob) => {
+                        try {
+                            await navigator.clipboard.write([
+                                new ClipboardItem({
+                                    'image/png': blob
+                                })
+                            ]);
+                            alert('Скриншот сделан, можно добавлять!');
+                        } catch (err) {
+                            console.error('Ошибка при копировании в буфер обмена:', err);
+                            alert('Не удалось скопировать скриншот в буфер обмена');
+                        }
+                    }, 'image/png');
+                } catch (err) {
+                    console.error('Ошибка при создании скриншота:', err);
+                    alert('Не удалось создать скриншот');
+                }
+            };
+
+            return (
+                <div className="App">
+                    <h1 className="main-title">WEEKLY ACHIEVEMENTS</h1>
+
+                    <div className="achievements-table">
+                        <div className="achievements-header">
+                            <div></div>
+                            <div>Название</div>
+                            <div>Описание задания</div>
+                        </div>
+                        
+                        {achievements.map(achievement => (
+                            <div key={achievement.id} className="achievement-row">
+                                <div className="achievement-number">{achievement.id}</div>
+                                <div className="achievement-title">{achievement.title}</div>
+                                <div className="achievement-description">{achievement.description}</div>
+                            </div>
+                        ))}
+                    </div>
+                
+                    <div className="logo-container">
+                        <img src="src/logo.svg" alt="Majestic Logo" className="logo" crossOrigin="anonymous" />
+                    </div>
+                    
+                    <div className="screenshot-button-container">
+                        <button onClick={takeScreenshot}>Сделать скриншот</button>
+                    </div>
+
+                    {!showBulkAdd ? (
+                        <form className="add-form" onSubmit={addAchievement}>
+                            <input 
+                                placeholder="Название" 
+                                value={newAchievement.title} 
+                                onChange={e => setNewAchievement({
+                                    ...newAchievement,
+                                    title: e.target.value
+                                })}
+                                style={{width: '250px'}}
+                            />
+                            <input 
+                                placeholder="Описание задания" 
+                                value={newAchievement.description} 
+                                onChange={e => setNewAchievement({
+                                    ...newAchievement,
+                                    description: e.target.value
+                                })}
+                                style={{flex: '1'}}
+                            />
+                            <button type="submit">Добавить</button>
+                            <button type="button" onClick={() => setShowBulkAdd(true)}>
+                                Массовое добавление
+                            </button>
+                            <button type="button" onClick={clearAllAchievements}>
+                                Очистить всё
+                            </button>
+                        </form>
+                    ) : (
+                        <div className="bulk-add">
+                            <textarea 
+                                placeholder="Названия (каждое с новой строки)" 
+                                value={bulkTitles} 
+                                onChange={e => setBulkTitles(e.target.value)} 
+                                style={{width: '250px'}}
+                            />
+                            <textarea 
+                                placeholder="Описания (каждое с новой строки)" 
+                                value={bulkDescriptions} 
+                                onChange={e => setBulkDescriptions(e.target.value)} 
+                                style={{flex: '1'}}
+                            />
+                            <div className="bulk-add-buttons">
+                                <button onClick={handleBulkAdd}>Добавить достижения</button>
+                                <button onClick={() => setShowBulkAdd(false)}>Отмена</button>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        try {
+            ReactDOM.render(<App />, document.getElementById('root'));
+        } catch (error) {
+            console.error('Ошибка при рендеринге:', error);
+        }
+    </script>
+</body>
+</html> 
