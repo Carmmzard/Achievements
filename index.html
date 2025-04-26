@@ -31,6 +31,17 @@
             });
             const [bulkTitles, setBulkTitles] = React.useState('');
             const [bulkDescriptions, setBulkDescriptions] = React.useState('');
+            const [subtitle, setSubtitle] = React.useState('');
+            const [isSubtitleFocused, setIsSubtitleFocused] = React.useState(false);
+            
+            const handleSubtitleFocus = () => {
+                setIsSubtitleFocused(true);
+            };
+            
+            const handleSubtitleBlur = (e) => {
+                setIsSubtitleFocused(false);
+                setSubtitle(e.target.textContent);
+            };
 
             const addAchievement = (e) => {
                 e.preventDefault();
@@ -113,6 +124,18 @@
             return (
                 <div className="App">
                     <h1 className="main-title">WEEKLY ACHIEVEMENTS</h1>
+                    <div className="subtitle-container">
+                        <div 
+                            className="subtitle-input"
+                            contentEditable="true"
+                            onFocus={handleSubtitleFocus}
+                            onBlur={handleSubtitleBlur}
+                            dangerouslySetInnerHTML={{
+                                __html: subtitle || (!isSubtitleFocused ? 
+                                    '<span class="placeholder">Нажмите 2 раза для ввода подзаголовка</span>' : '')
+                            }}
+                        />
+                    </div>
 
                     <div className="achievements-table">
                         <div className="achievements-header">
