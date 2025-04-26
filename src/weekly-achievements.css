@@ -25,6 +25,34 @@ h1 {
   font-family: 'Krona One', sans-serif;
 }
 
+.subtitle-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.subtitle-input {
+  font-family: 'Krona One', sans-serif;
+  font-size: 18px;
+  color: #888;
+  background-color: transparent;
+  border: none;
+  text-align: center;
+  padding: 5px;
+  width: 70%;
+  max-width: 600px;
+  min-height: 28px;
+}
+
+.subtitle-input:focus {
+  outline: none;
+}
+
+.subtitle-input .placeholder {
+  color: #666;
+  cursor: text;
+}
+
 /* Стили для таблицы достижений */
 .achievements-table {
   border-radius: 16px;
