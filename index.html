@@ -34,7 +34,7 @@
 
             const addAchievement = (e) => {
                 e.preventDefault();
-                if (newAchievement.title && newAchievement.description) {
+                if (newAchievement.description) {
                     setAchievements([...achievements, {
                         ...newAchievement,
                         id: achievements.length + 1
@@ -47,13 +47,12 @@
             };
 
             const handleBulkAdd = () => {
-                const titles = bulkTitles.split('\n').filter(t => t.trim());
                 const descriptions = bulkDescriptions.split('\n').filter(d => d.trim());
 
-                const newAchievements = titles.map((title, index) => ({
+                const newAchievements = descriptions.map((description, index) => ({
                     id: achievements.length + index + 1,
-                    title: title.trim(),
-                    description: descriptions[index] ? descriptions[index].trim() : ''
+                    title: '',
+                    description: description.trim()
                 }));
 
                 setAchievements([...achievements, ...newAchievements]);
@@ -113,19 +112,17 @@
 
             return (
                 <div className="App">
-                    <h1 className="main-title">FAMILY ACHIEVEMENTS</h1>
+                    <h1 className="main-title">WEEKLY ACHIEVEMENTS</h1>
 
                     <div className="achievements-table">
                         <div className="achievements-header">
                             <div></div>
-                            <div>Название</div>
                             <div>Описание задания</div>
                         </div>
                         
                         {achievements.map(achievement => (
                             <div key={achievement.id} className="achievement-row">
                                 <div className="achievement-number">{achievement.id}</div>
-                                <div className="achievement-title">{achievement.title}</div>
                                 <div className="achievement-description">{achievement.description}</div>
                             </div>
                         ))}
@@ -141,15 +138,6 @@
 
                     {!showBulkAdd ? (
                         <form className="add-form" onSubmit={addAchievement}>
-                            <input 
-                                placeholder="Название" 
-                                value={newAchievement.title} 
-                                onChange={e => setNewAchievement({
-                                    ...newAchievement,
-                                    title: e.target.value
-                                })}
-                                style={{width: '250px'}}
-                            />
                             <input 
                                 placeholder="Описание задания" 
                                 value={newAchievement.description} 
@@ -169,12 +157,6 @@
                         </form>
                     ) : (
                         <div className="bulk-add">
-                            <textarea 
-                                placeholder="Названия (каждое с новой строки)" 
-                                value={bulkTitles} 
-                                onChange={e => setBulkTitles(e.target.value)} 
-                                style={{width: '250px'}}
-                            />
                             <textarea 
                                 placeholder="Описания (каждое с новой строки)" 
                                 value={bulkDescriptions} 
